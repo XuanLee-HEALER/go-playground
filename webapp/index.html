@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Go Playground WebSocket Lab</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="glow"></div>
+    <div class="page">
+      <header class="hero">
+        <div class="title-block">
+          <p class="eyebrow">Go Playground</p>
+          <h1>WebSocket Test Rig</h1>
+          <p class="subhead">Full-window session desk with group-scoped echo.</p>
+        </div>
+        <div class="status-card" aria-live="polite">
+          <div class="status-text">
+            <p class="label">Sessions</p>
+            <p class="value" id="sessionCount">1 active rig</p>
+          </div>
+          <div class="status-metrics">
+            <div>
+              <p class="label">Tip</p>
+              <p class="value">Same id = shared echo</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="label">Session Deck</p>
+            <p class="value">Broadcast stays inside a group, ids stay per user.</p>
+          </div>
+          <button id="addSessionBtn" class="btn primary">Add Session</button>
+        </div>
+        <div class="row">
+          <label class="field grow">
+            <span>Notify User Message</span>
+            <input id="notifyMessage" type="text" value="server notice">
+          </label>
+          <label class="field">
+            <span>User Id</span>
+            <input id="notifyUserId" type="text" value="alpha">
+          </label>
+          <div class="button-column">
+            <button id="notifyUserBtn" class="btn ghost">Notify User</button>
+          </div>
+        </div>
+        <div class="row">
+          <label class="field">
+            <span>Redis User Ids (comma)</span>
+            <input id="redisUserIds" type="text" value="alpha,beta">
+          </label>
+          <label class="field">
+            <span>Redis Message</span>
+            <input id="redisMessage" type="text" value="redis ping">
+          </label>
+          <label class="field">
+            <span>Interval (ms)</span>
+            <input id="redisInterval" type="number" min="100" step="100" value="1000">
+          </label>
+          <div class="button-column">
+            <button id="redisStartBtn" class="btn accent">Start Redis</button>
+            <button id="redisStopBtn" class="btn ghost" disabled>Stop Redis</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="sessions" id="sessions" aria-live="polite"></section>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
