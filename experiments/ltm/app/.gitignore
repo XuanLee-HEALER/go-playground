@@ -1,0 +1,6 @@
+# Build output
+/ltm-lab
+/ltm-lab.exe
+
+# OS artifacts
+*.log
