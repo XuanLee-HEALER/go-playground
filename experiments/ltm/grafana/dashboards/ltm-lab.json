@@ -1,0 +1,61 @@
+{
+  "uid": "ltm-lab",
+  "title": "LTM Lab",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5s",
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Request Rate (RPS)",
+      "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(ltm_lab_requests_total[1m])) by (route, status)"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "P95 Latency (ms)",
+      "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.95, sum(rate(ltm_lab_request_latency_ms_milliseconds_bucket[5m])) by (le, route))"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Inflight Requests",
+      "gridPos": {"x": 0, "y": 8, "w": 6, "h": 6},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(ltm_lab_inflight_requests)"
+        }
+      ]
+    },
+    {
+      "type": "logs",
+      "title": "Recent Logs",
+      "gridPos": {"x": 6, "y": 8, "w": 18, "h": 12},
+      "datasource": {"type": "loki", "uid": "loki"},
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "{service_name=\"ltm-lab\"}"
+        }
+      ]
+    }
+  ]
+}

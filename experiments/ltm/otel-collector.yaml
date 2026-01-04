@@ -1,0 +1,50 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 200
+    spike_limit_mib: 50
+  attributes/loki:
+    actions:
+      - key: loki.resource.labels
+        action: insert
+        value: service.name
+      - key: loki.attribute.labels
+        action: insert
+        value: trace_id,span_id,route,status
+  batch:
+
+exporters:
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    namespace: ltm_lab
+  otlp/tempo:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+
+extensions:
+  health_check:
+
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlp/tempo]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, attributes/loki, batch]
+      exporters: [loki]
